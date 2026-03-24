@@ -13,6 +13,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ ROOT ROUTE (NEW)
+app.get("/", (req, res) => {
+  res.send("DriveCure Backend is Running 🚀");
+});
+
+// ✅ API TEST ROUTE (NEW)
+app.get("/api", (req, res) => {
+  res.send("DriveCure API is working ✅");
+});
+
+// MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.log("❌ MongoDB Error:", err.message));
@@ -69,9 +80,8 @@ IMPORTANT:
 - ALWAYS give at least 2 topCauses
 - NEVER leave solutions empty
 - ALWAYS give at least 2 solutions
-- mainCause must include exact part (bulb, fuse, compressor, brake pad)
+- mainCause must include exact part
 - If canDriverFix = "No" → diySteps = []
-- Keep answers practical
 
 Problem: ${problem}
           `,
@@ -101,8 +111,7 @@ Problem: ${problem}
       };
     }
 
-    // 🔥 SAFETY FIXES (VERY IMPORTANT)
-
+    // ✅ SAFETY FIXES
     if (!aiResult.mainCause || aiResult.mainCause.length < 5) {
       aiResult.mainCause = "Possible component failure (needs inspection)";
     }
@@ -125,7 +134,7 @@ Problem: ${problem}
       aiResult.diySteps = [];
     }
 
-    // 🔥 SAVE HISTORY
+    // ✅ SAVE HISTORY
     await History.create({
       problem,
       result: aiResult,
