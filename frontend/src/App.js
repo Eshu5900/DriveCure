@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 
-// 🔥 AUTO API URL (IMPORTANT FIX)
-const API_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:5000"
-    : `http://${window.location.hostname}:5000`;
+// 🔥 FIXED API URL (IMPORTANT)
+const API_URL = "https://drivecure-backend.onrender.com";
 
 function App() {
   const [problem, setProblem] = useState("");
@@ -86,7 +83,7 @@ function App() {
     fetchHistory();
   }, []);
 
-  // 🔥 UPDATED API
+  // 🔥 FETCH HISTORY
   const fetchHistory = async () => {
     const res = await fetch(`${API_URL}/api/history`);
     const data = await res.json();
@@ -107,7 +104,6 @@ function App() {
       },
       body: JSON.stringify({
         problem: inputText,
-        mode: voiceInput ? "voice" : "text",
       }),
     });
 
